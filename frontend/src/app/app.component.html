@@ -1,0 +1,166 @@
+<div class="navbar">
+    <div class="logo">
+        <a routerLink="/" class="atitle">
+            <img src="../favicon.ico" alt="icon" />&nbsp;Part.Shop
+        </a>
+    </div>
+    <div class="srchbar">
+        <div class="searchFormholder">
+            <input type="text" class="SearchText" [formControl]="SearchTerm" autocomplete="off" placeholder="Search"
+                id="txtsrch" #txtsrch>
+            <button class="btnsrch" (click)="SearchClick()" appRipple>
+                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
+                    <path fill='rgba(0,0,0,.54)' class="srchsvgpth"
+                        d='M20.49 19l-5.73-5.73C15.53 12.2 16 10.91 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.41 0 2.7-.47 3.77-1.24L19 20.49 20.49 19zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z' />
+                </svg>
+            </button>
+            <div class="autocomplete-drop-down" [ngClass]="{'autocomplete-drop-down':Showdropdown}" *ngIf="Showdropdown"
+                [ngStyle]="{'width.px':txtsrch.offsetWidth}">
+                <div *ngFor="let data of SearchResult " class="autocomplete-item" (click)="SetSrchBoxvalue(data)"
+                    [ngStyle]="{'width.px':txtsrch.offsetWidth}" [innerHTML]="HighlightText(data.prdName)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="usercontrol">
+        <div style="display: flex;flex-direction: row-reverse;align-items: center;gap: 1.5rem;">
+            <div *ngIf="!LogedIn">
+                <button class="btnLogin" (click)="dialog.Open()">Login</button>
+            </div>
+            <div *ngIf="LogedIn">
+                <img src="https://avatars.dicebear.com/api/initials/:{{LoggedUser.emailID}}.svg" [alt]="LoggedUser.Name"
+                    style="width: 40px;height: 40px;border-radius: 40px;cursor: pointer;border: 1px solid greenyellow;"
+                    loading="lazy" id="imgprofile" />
+                <div *ngIf="showProfileManu" class="dropdownmenu">
+                    <p>Account</p>
+                    <p>Orders</p>
+                    <p>Logout</p>
+                </div>
+            </div>
+            <div>
+                <shop-cart-icon [cartItemCount]="$any($cartItems|async)?.length"></shop-cart-icon>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin: 8px;">
+    <router-outlet></router-outlet>
+</div>
+
+<app-dialog #dialog [modelBackdrop]="true">
+    <div d-header>
+        <p #formTitle>Login</p>
+    </div>
+    <div d-body>
+        <ng-container *ngIf="formNo === 0">
+            <form #login="ngForm" class="loginform" (submit)="login.form.valid && Login(login)">
+                <div class="formgroup">
+                    <input type="email" name="username" #username="ngModel" [(ngModel)]="LoginForm.emailID"
+                        autocomplete="off" required email class="logininput" placeholder="Username" />
+                    <div *ngIf="username.hasError && (username.touched || username.dirty || login.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="username.hasError('required')">
+                            Username is Required
+                        </small>
+                        <small *ngIf="username.hasError('email')">
+                            Username is invalid format
+                        </small>
+                        <small *ngIf="username.hasError('invalidusername')">
+                            Invalid Username
+                        </small>
+                    </div>
+                </div>
+                <div class="formgroup">
+                    <input type="password" name="password" #password="ngModel" [(ngModel)]="LoginForm.Password"
+                        autocomplete="off" required class="logininput" placeholder="Password" />
+                    <div *ngIf="password.hasError && (password.touched || password.dirty || login.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="password.hasError('required')">
+                            password is Required
+                        </small>
+                        <small *ngIf="password.hasError('invaliduspass')">
+                            Invalid Username or Password
+                        </small>
+                    </div>
+                </div>
+                <div class="formdivControl">
+                    <button type="submit" class="btnLogin btnForm">Login</button>
+                    <button type="button" class="btnLogin btnForm"
+                        (click)="formNo = 1;formTitle.innerText='Sign Up'">Create Account</button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-container *ngIf="formNo === 1">
+            <form #signup="ngForm" class="loginform" (submit)="signup.form.valid && createAccount()">
+                <div class="formgroup">
+                    <input type="text" name="fname" #fname="ngModel" [(ngModel)]="signUpForm.Fname" autocomplete="off"
+                        required class="logininput" placeholder="First Name" />
+                    <div *ngIf="fname.hasError && (fname.touched || fname.dirty || signup.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="fname.hasError('required')">
+                            First Name is Required
+                        </small>
+                    </div>
+                </div>
+                <div class="formgroup">
+                    <input type="text" name="mname" #mname="ngModel" [(ngModel)]="signUpForm.Mname" autocomplete="off"
+                    class="logininput" placeholder="Middle Name" />
+                </div>
+                <div class="formgroup">
+                    <input type="text" name="lname" #lname="ngModel" [(ngModel)]="signUpForm.Lname" autocomplete="off"
+                        required class="logininput" placeholder="Last Name" />
+                    <div *ngIf="lname.hasError && (lname.touched || lname.dirty || signup.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="lname.hasError('required')">
+                            Last Name is Required
+                        </small>
+                    </div>
+                </div>
+                <div class="formgroup">
+                    <input type="date" name="dob" #dob="ngModel" [(ngModel)]="signUpForm.DOB" autocomplete="off"
+                        required class="logininput" placeholder="DOB" date />
+                    <div *ngIf="dob.hasError && (dob.touched || dob.dirty || signup.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="dob.hasError('required')">
+                            DOB is Required
+                        </small>
+                        <small *ngIf="dob.hasError('date')">
+                            Invalida Date Format
+                        </small>
+                    </div>
+                </div>
+                <div class="formgroup">
+                    <input type="email" name="emailID" #emailID="ngModel" [(ngModel)]="signUpForm.EmailID"
+                        autocomplete="off" required email class="logininput" placeholder="Email ID" />
+                    <div *ngIf="emailID.hasError && (emailID.touched || emailID.dirty || signup.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="emailID.hasError('required')">
+                            Email ID is Required
+                        </small>
+                        <small *ngIf="emailID.hasError('email')">
+                            Email ID is invalid format
+                        </small>
+                    </div>
+                </div>
+                <div class="formgroup">
+                    <input type="password" name="password" #password="ngModel" [(ngModel)]="signUpForm.Password"
+                        autocomplete="off" required class="logininput" placeholder="Password" />
+                    <div *ngIf="password.hasError && (password.touched || password.dirty || signup.submitted)"
+                        style="width: 75%;">
+                        <small *ngIf="password.hasError('required')">
+                            password is Required
+                        </small>
+                    </div>
+                </div>
+                <div class="formdivControl">
+                    <button type="submit" class="btnLogin btnForm">Sign Up</button>
+                    <button type="button" class="btnLogin btnForm"
+                        (click)="formNo = 0;formTitle.innerText='Login'">Create Account</button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-container *ngIf="formNo === 2">
+            <h1>OtpVerify</h1>
+        </ng-container>
+    </div>
+</app-dialog>

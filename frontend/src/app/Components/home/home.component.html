@@ -1,0 +1,17 @@
+<div class="divrow">
+    <div class="lsvcard" *ngIf="($login|async) && data.length >0">
+        <div class="lscardheader">
+            Last Visited
+        </div>
+        <div class="lscardbody">
+            <div *ngFor="let item of data" class="divelem" (click)="viewPart(item)">
+                <div>
+                    <b>{{item.Part}}</b>
+                </div>
+                <div *ngFor="let src of item.Images">
+                    <img [src]="src" [attr.alt]="item.Part" loading="lazy" style="width: 200px;height: 200px;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

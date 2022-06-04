@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --color-shades-gray: #585b63;
+    --color-core-primary: #3740ff;
+    --color-shades-light: #f8f9fa;
+}
+
+body {
+    margin: auto;
+    background-color: var(--color-shades-light);
+    font-family: sans-serif, 'Courier New', Courier, monospace;
+}
+
+.ripple {
+    width: 2px;
+    height: 2px;
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    animation: rippleEffect 0.5s ease-in-out;
+}
+
+@keyframes rippleEffect {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(var(--scale));
+    }
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active {
+    outline: none;
+}

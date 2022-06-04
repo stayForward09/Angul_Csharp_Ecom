@@ -1,0 +1,86 @@
+.divrow {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    /* align-items: center; */
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.divelem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem;
+    border-radius: 0.2rem;
+    border: 1px solid rgba(0, 0, 0, .2);
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    flex: 0 1 20%;
+}
+
+.wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex: 1 1 100%;
+}
+
+.filterwrapper {
+    flex: 0 1 10%;
+    display: flex;
+    background: #fff;
+    box-shadow: 0 1px 8px 0 rgb(0 0 0 / 6%);
+    padding: 0.5rem;
+}
+
+.searchDetails {
+    flex: 1 1 80%;
+    display: flex;
+    background: #fff;
+    box-shadow: 0 1px 8px 0 rgb(0 0 0 / 6%);
+    padding: 0.5rem;
+}
+
+.divPagingwrapper {
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    line-height: 32px;
+}
+
+.divCardBodyContent {
+    color: #585b63;
+    word-break: break-all;
+}
+
+.divCardFooterContent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+    width: 100%;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+@media (max-width: 700px) {
+    .divelem {
+        flex: 0 1 100%;
+    }
+}
+
+@media (max-width: 800px) and (min-width:700px) {
+    .divelem {
+        flex: 0 1 40%;
+    }
+}

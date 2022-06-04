@@ -1,0 +1,23 @@
+<div class="divcontainer">
+    <div class="divwrapper">
+        <div *ngIf="currentImage.IsTd;else imagesrc">
+            <model-viewer src="https://localhost:7036/Admin/DownloadFile/{{currentImage.Url}}" shadow-intensity="1" ar
+                ar-modes="webxr scene-viewer quick-look" camera-controls alt="{{productData.Part}}">
+            </model-viewer>
+        </div>
+        <ng-template #imagesrc>
+            <img [src]="currentImage.Url" [attr.alt]="productData.Part" class="imgprd" loading="lazy" />
+        </ng-template>
+        <ul style="list-style: none;display: flex;gap: 0.4rem;">
+            <li *ngFor="let src of productData.Images;index as i">
+                <div [ngClass]=" i === prtIndex?'divindicator divactive':'divindicator'" (click)="changeImage(i)"></div>
+            </li>
+        </ul>
+        <div>
+            <button appRipple (click)="addItemstoCart()" class="btn-cart">Add to Cart</button>
+        </div>
+    </div>
+    <div class="divrow">
+        <h5>{{productData.Part}}</h5>
+    </div>
+</div>

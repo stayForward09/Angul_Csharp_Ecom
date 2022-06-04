@@ -1,0 +1,6 @@
+<div style="display: flex;flex-direction: row;align-items: center;gap: 0.5rem;padding: 1rem;">
+    <div *ngFor="let page of pages;index as i">
+        <button type="button" class="pagenationButton" [ngClass]="{'pagenationButton-active': (i+1) == pageNumber }"
+            (click)="clickEvent(i+1)">{{i+1}}</button>
+    </div>
+</div>

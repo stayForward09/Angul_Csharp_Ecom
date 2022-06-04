@@ -1,0 +1,200 @@
+.logo {
+    flex: 1 1 30%;
+}
+
+
+.navbar {
+    display: flex;
+    padding: 0.5rem;
+    flex-wrap: wrap;
+    background-color: white;
+    min-height: 3rem;
+    box-shadow: 0 0 2px 0 rgb(0 0 0 / 70%);
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.atitle {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-shades-gray);
+    font-size: 1.5rem;
+    width: fit-content;
+}
+
+.srchbar {
+    flex: 1 1 30%;
+}
+
+.searchFormholder {
+    display: flex;
+    align-items: center;
+}
+
+.btnsrch {
+    height: 49px;
+    padding: 0.2rem;
+    outline: none;
+    width: 40px;
+    border-radius: 0 0.2rem 0.2rem 0;
+    border: none;
+    cursor: pointer;
+    background-color: var(--color-core-primary);
+    color: white;
+}
+
+.SearchText {
+    width: 100%;
+    padding: 0.2rem;
+    border-radius: 0.2rem 0 0 0.2rem;
+    border: 1px solid var(--color-shades-gray);
+    height: 40px;
+    outline: none;
+    font-size: 1.5rem;
+}
+
+.srchsvgpth {
+    fill: white;
+}
+
+.usercontrol {
+    flex: 1 1 30%;
+}
+
+.autocomplete-drop-down {
+    display: flex;
+    height: auto;
+    background-color: white;
+    align-items: flex-start;
+    box-shadow: 1px 1px 2px 2px rgb(0 0 0 / 40%);
+    position: absolute;
+    top: 58px;
+    border-radius: 0 0 0.3rem 0.3rem;
+    flex-direction: column;
+    padding-bottom: 1rem;
+    z-index: 1;
+    font-size: 1.5rem;
+    gap: 0.3rem;
+}
+
+.autocomplete-item {
+    cursor: pointer;
+    word-break: break-all;
+    line-height: 30px;
+}
+
+.autocomplete-item:hover {
+    background-color: rgb(0 0 0 / 40%);
+}
+
+.btnLogin {
+    height: 49px;
+    padding: 0.2rem;
+    outline: none;
+    width: 100px;
+    border-radius: 0.2rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--color-core-primary);
+    color: white;
+    font-size: 1rem;
+}
+
+:host ::ng-deep [d-header] {
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 1px solid rgb(0 0 0 / 70%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.8rem;
+    flex-wrap: wrap;
+}
+
+:host ::ng-deep [d-body] {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.formgroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.loginform {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+.logininput {
+    width: 75%;
+    height: 40px;
+    font-size: 1rem;
+    padding: 0.2rem;
+    border: 0;
+    outline: none;
+    box-shadow: 0 0 2px 0 rgb(0 0 0 / 70%);
+    border-radius: 2px;
+}
+
+/* .logininput:focus {
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, .1), 0px 8px 8px 1px rgba(0, 0, 0, .07), 0px 3px 8px 2px rgba(0, 0, 0, .08), 0px 0px 0px 2px #4285f4;
+    transition: transform 200ms linear, box-shadow 200ms linear, background 400ms ease, border-color 400ms ease;
+} */
+
+small {
+    font-size: 1em;
+    color: red;
+}
+
+.formdivControl {
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+input.ng-touched.ng-invalid {
+    border: 1px solid red !important;
+}
+
+.logininput:has(.ng-touched.ng-invalid):focus {
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, .1), 0px 8px 8px 1px rgba(0, 0, 0, .07), 0px 3px 8px 2px rgba(0, 0, 0, .08), 0px 0px 0px 2px red !important;
+    transition: transform 200ms linear, box-shadow 200ms linear, background 400ms ease, border-color 400ms ease;
+}
+
+.dropdownmenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 1px 1px 2px 2px rgb(0 0 0 / 40%);
+    right: 5px;
+    top: 60px;
+    min-width: 100px;
+    background-color: khaki;
+    padding: 0.2rem;
+}
+
+.btnForm {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1rem;
+}

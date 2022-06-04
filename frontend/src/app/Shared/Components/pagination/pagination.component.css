@@ -1,0 +1,17 @@
+.pagenationButton {
+    padding: 0.4rem;
+    color: black;
+    border-radius: 50%;
+    border: transparent;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.pagenationButton-active {
+    background: #2874f0;
+    color: #fff;
+}
