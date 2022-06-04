@@ -83,9 +83,6 @@ public class AdminController : ControllerBase
     [HttpPost]
     [Route("[controller]/Login")]
     [AllowAnonymous]
-    // sasiKumar12
-    // Mathi@124
-    // mathi.root@gmail.com
     public async Task<IActionResult> Login(LoginDtos login)
     {
         try
