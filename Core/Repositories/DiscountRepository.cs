@@ -13,6 +13,26 @@ public class DiscountRepository : GenericRepository<Discount>, IDiscountReposito
 
     }
 
+    public async Task<Discount> fetchDiscountbyCondition(Expression<Func<Discount, bool>> predicate, bool tracking = false)
+    {
+        if (!tracking)
+        {
+            context.Discount.AsNoTracking();
+        }
+        var data = await context.Discount.FirstOrDefaultAsync(predicate);
+        return data;
+    }
+
+    public async Task<IEnumerable<Discount>> fetchDiscountsbyCondition(Expression<Func<Discount, bool>> predicate, bool tracking = false)
+    {
+        if (!tracking)
+        {
+            context.Discount.AsNoTracking();
+        }
+        var data = await context.Discount.Where(predicate).ToListAsync();
+        return data;
+    }
+
     public async Task<decimal> getDiscountPrice(Expression<Func<Discount, bool>> predicate)
     {
         var data = await context.Discount.FirstOrDefaultAsync(predicate);

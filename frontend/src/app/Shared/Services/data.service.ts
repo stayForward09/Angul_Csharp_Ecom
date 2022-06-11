@@ -1,4 +1,5 @@
-import { ILoginUser, ICartItems } from './../Models/response';
+import { ServerService } from 'src/app/Shared/Services/server.service';
+import { ILoginUser, ICart, Response } from './../Models/response';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -9,10 +10,10 @@ export class DataService {
   title = new BehaviorSubject<string>('');
   isLogged = new BehaviorSubject<boolean>(false);
   loggedUser = new BehaviorSubject<ILoginUser>(<ILoginUser>{});
-  cartItems = new BehaviorSubject<Array<ICartItems>>([]);
-  cartData: Array<ICartItems>=[];
+  cartItems = new BehaviorSubject<Array<ICart>>([]);
+  cartData: Array<ICart> = [];
 
-  constructor() {}
+  constructor(private server: ServerService) {}
 
   ShareTitle(tileC: string) {
     this.title.next(tileC);
@@ -25,6 +26,20 @@ export class DataService {
     this.loggedUser.next(data);
   }
   ShareCartItem() {
+    console.log('Emiting Changes..');
     this.cartItems.next(this.cartData);
+  }
+
+  getCartDetails() {
+    this.server.getCartItems().subscribe(
+      (x: Response) => {
+        var d = x.Data as Array<ICart>;
+        this.cartData = d;
+        this.ShareCartItem();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }

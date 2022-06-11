@@ -3,7 +3,7 @@ import { DataService } from './../../Shared/Services/data.service';
 import { AppComponent } from './../../app.component';
 import { Component, OnInit } from '@angular/core';
 import { ServerService } from 'src/app/Shared/Services/server.service';
-import { ICartItems, Response } from 'src/app/Shared/Models/response';
+import { Response } from 'src/app/Shared/Models/response';
 import { Observable } from 'rxjs';
 
 @Component({

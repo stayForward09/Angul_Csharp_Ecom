@@ -5,7 +5,8 @@
 
 .divcontainer {
     display: flex;
-    padding: 0.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .divwrapper {
@@ -13,6 +14,7 @@
     flex-direction: column;
     align-items: center;
     border: 1px solid #f0f0f0;
+    flex: 0 1 30%;
 }
 
 .divindicator {
@@ -29,11 +31,12 @@
 
 .divrow {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: beige;
     color: black;
     font-size: 1.5rem;
-    width: 100%;
+    flex: 0 1 69%;
+    padding: 0.2rem;
 }
 
 model-viewer {

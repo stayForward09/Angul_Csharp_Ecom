@@ -41,5 +41,11 @@ public class Mapper : Profile
         .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
         .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate))
         .ReverseMap();
+
+        CreateMap<CartItems, CartItemsAdd>()
+        .ForMember(dest => dest.CIPrid, opt => opt.MapFrom(src => src.CIPrid))
+        .ForMember(dest => dest.CIQty, opt => opt.MapFrom(src => src.CIQty))
+        .ForMember(dest => dest.CITId, opt => opt.MapFrom(src => src.CITId))
+        .ReverseMap();
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackApi.Core.IConfiguration;
 using StackApi.Dtos;
@@ -27,10 +28,16 @@ public class DiscountController : ControllerBase
         return Ok(data);
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Policy = "Admin")]
     [Route("[action]")]
-    public async Task<IActionResult> CreateDiscount([FromBody] DiscountAdd discountAdd)
+    public async Task<IActionResult> createDiscount([FromBody] DiscountAdd discountAdd)
     {
+        var discountExists = await _unitofWork.discountRepository.fetchDiscountbyCondition(x => x.EndDate > discountAdd.StartDate && (x.PrdId == discountAdd.PrdId || x.CId == discountAdd.CId));
+        if (discountExists is not null)
+        {
+            string type = discountAdd.PrdId is null ? "Category" : "Product";
+            return BadRequest(new Response<object>() { Succeeded = false, Message = $"Discount already Exists for {type}" });
+        }
         if (discountAdd.DType == 2 && discountAdd.Amount > 100)
         {
             return BadRequest(new Response<object>() { Succeeded = false, Message = "Discount Percentage Should not greater than 100" });
@@ -46,5 +53,19 @@ public class DiscountController : ControllerBase
             return StatusCode(500, new Response<object>() { Succeeded = false, Errors = new string[] { ex.Message } });
         }
         return Ok(new Response<object>() { Succeeded = true, Data = discount });
+    }
+
+    [HttpPut, Authorize(Policy = "Admin")]
+    [Route("[action]/{id}")]
+    public async Task<IActionResult> updateDiscount([FromRoute] Guid id, [FromBody] DiscountAdd discountAdd)
+    {
+        var dbData = await _unitofWork.discountRepository.fetchDiscountbyCondition(x => x.Did == id, true);
+        if (dbData is null)
+        {
+            return BadRequest(new Response<object>() { Succeeded = false, Message = "Discount Not Found" });
+        }
+        _mapper.Map<DiscountAdd, Discount>(discountAdd, dbData);
+        await _unitofWork.CompleteAsync();
+        return Ok(new Response<object>() { Succeeded = true, Message = "Updated" });
     }
 }

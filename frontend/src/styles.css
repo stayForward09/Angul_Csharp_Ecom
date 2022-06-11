@@ -3,12 +3,29 @@
     --color-shades-gray: #585b63;
     --color-core-primary: #3740ff;
     --color-shades-light: #f8f9fa;
+    --color-bg: white;
+    --color-text-primary: #121212;
+    --border-card: 1px solid rgba(0, 0, 0, .2);
+    --svg-fill-color:black !important;
 }
 
 body {
     margin: auto;
     background-color: var(--color-shades-light);
     font-family: sans-serif, 'Courier New', Courier, monospace;
+}
+
+body.dark-mode {
+    --color-shades-gray: white;
+    --color-core-primary: #3740ff;
+    --color-shades-light: #1E1E1E;
+    --color-bg: #1E1E1E;
+    --color-text-primary: white;
+    color-scheme: dark;
+    accent-color: white;
+    color: white !important;
+    --border-card: 1px solid white;
+    --svg-fill-color: white !important;
 }
 
 .ripple {
@@ -37,4 +54,8 @@ button:focus {
 
 button:active {
     outline: none;
+}
+
+.fontBolder {
+    font-weight: bolder;
 }

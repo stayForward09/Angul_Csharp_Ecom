@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using StackApi.Core.IRepositories;
 using StackApi.Data;
@@ -27,7 +28,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await dbSet.ToListAsync();
     }
 
-    public Task<bool> Delete(Guid ID)
+    public virtual Task<bool> Delete(Guid ID)
     {
         throw new NotImplementedException();
     }
@@ -40,5 +41,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public virtual Task<bool> Update(T Entity)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<T>> getByCondition(Expression<Func<T, bool>> predicate)
+    {
+        var data = await dbSet.Where(predicate).ToListAsync();
+        return data;
     }
 }

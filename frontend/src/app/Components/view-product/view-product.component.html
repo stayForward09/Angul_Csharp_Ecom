@@ -1,5 +1,5 @@
 <div class="divcontainer">
-    <div class="divwrapper">
+    <div class="divwrapper" #wraper>
         <div *ngIf="currentImage.IsTd;else imagesrc">
             <model-viewer src="https://localhost:7036/Admin/DownloadFile/{{currentImage.Url}}" shadow-intensity="1" ar
                 ar-modes="webxr scene-viewer quick-look" camera-controls alt="{{productData.Part}}">
@@ -18,6 +18,11 @@
         </div>
     </div>
     <div class="divrow">
-        <h5>{{productData.Part}}</h5>
+        <div>
+            <h5>{{productData.Part}}</h5>
+        </div>
+        <div>
+            {{productData.Description}}
+        </div>
     </div>
 </div>

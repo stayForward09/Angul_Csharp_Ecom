@@ -13,6 +13,7 @@ import { DialogComponent } from './Shared/Components/dialog/dialog.component';
 import { ShopCartIconComponent } from './Shared/Components/shop-cart-icon/shop-cart-icon.component';
 import { RippleDirective } from './Shared/Directives/ripple.directive';
 import { PaginationComponent } from './Shared/Components/pagination/pagination.component';
+import { CartComponent } from './Components/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PaginationComponent } from './Shared/Components/pagination/pagination.c
     DialogComponent,
     ShopCartIconComponent,
     RippleDirective,
-    PaginationComponent
+    PaginationComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

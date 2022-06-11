@@ -1,4 +1,6 @@
 
+using System.Linq.Expressions;
+
 namespace StackApi.Core.IRepositories;
 
 public interface IGenericRepository<T> where T : class
@@ -8,4 +10,5 @@ public interface IGenericRepository<T> where T : class
     Task<bool> Add(T Entity);
     Task<bool> Delete(Guid ID);
     Task<bool> Update(T Entity);
+    Task<IEnumerable<T>> getByCondition(Expression<Func<T,bool>> predicate);
 }

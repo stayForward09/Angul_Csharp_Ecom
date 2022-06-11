@@ -29,15 +29,6 @@ export interface ILoginUser {
   usID: string;
 }
 
-export interface ICartItems {
-  Description: string;
-  ID: string;
-  Images: Array<string>;
-  Part: string;
-  Price: number;
-  Qty: number;
-}
-
 export interface Signup {
   UsID: string;
   Fname: string;
@@ -48,4 +39,27 @@ export interface Signup {
   EmailConfirmed: boolean;
   Password: string;
   IsAdmin: boolean;
+}
+
+export interface IcartItemsAdd {
+  CITId: string;
+  CIPrid: string;
+  CIQty: number;
+  CIUsid: string;
+}
+
+export interface ICart {
+  Cid: string;
+  Pid: string;
+  Pname: string;
+  Price: number;
+  Images: string;
+  Disount: IcartDiscount;
+  Qty: number;
+}
+
+export interface IcartDiscount {
+  type: number;
+  Did: string;
+  Price: number;
 }

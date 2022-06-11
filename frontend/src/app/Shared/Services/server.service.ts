@@ -1,4 +1,4 @@
-import { ILogin, Signup } from './../Models/response';
+import { IcartItemsAdd, ILogin, Signup } from './../Models/response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -31,6 +31,7 @@ export class ServerService {
       this.BaseUrl + `Admin/SearchPrd/${data}/${pagenumber}/${pageSize}`
     );
   }
+
   GetPartbyID(data: string): Observable<Response> {
     return this.Http.get<Response>(this.BaseUrl + `Admin/GetPartbyID/${data}`);
   }
@@ -45,5 +46,26 @@ export class ServerService {
   }
   AddUser(data: Signup): Observable<Response> {
     return this.Http.post<Response>(this.BaseUrl + 'Admin/AddUser', data);
+  }
+  getCartItems(): Observable<Response> {
+    return this.Http.get<Response>(this.BaseUrl + 'api/CartItems/getCartItems');
+  }
+  addCartItems(data: IcartItemsAdd): Observable<Response> {
+    return this.Http.post<Response>(
+      this.BaseUrl + 'api/CartItems/addItemtoCart',
+      data
+    );
+  }
+  patchCartItems(data: IcartItemsAdd): Observable<Response> {
+    return this.Http.patch<Response>(
+      this.BaseUrl + 'api/CartItems/updateCartItems',
+      data
+    );
+  }
+
+  deleteCartItem(id: string) {
+    return this.Http.delete<Response>(
+      this.BaseUrl + `api/CartItems/deleteCartItem/${id}`
+    );
   }
 }

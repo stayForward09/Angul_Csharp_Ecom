@@ -5,8 +5,8 @@ import {
   Response,
   ILogin,
   ILoginUser,
-  ICartItems,
   Signup,
+  ICart,
 } from './Shared/Models/response';
 import { FormControl } from '@angular/forms';
 import { debounceTime, Observable, empty, retry } from 'rxjs';
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   SearchResult: any[] = [];
   Showdropdown: boolean = false;
   showProfileManu: boolean = false;
-  $cartItems: Observable<Array<ICartItems>> = empty();
+  $cartItems: Observable<Array<ICart>> = empty();
 
   LogedIn: boolean = false;
   LoggedUser: ILoginUser = <ILoginUser>{};
@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   @ViewChild('dialog', { static: true }) dialogElement!: DialogComponent;
   formNo: number = 0;
   signUpForm: Signup = <Signup>{};
+  private theme: string = 'l';
 
   constructor(
     private server: ServerService,
@@ -49,6 +50,8 @@ export class AppComponent implements OnInit {
       }
     });
     this.$cartItems = this.dataServer.cartItems.asObservable();
+    let mode = window.localStorage.getItem('eSt') ?? 'l';
+    this.changeTheme(mode);
   }
 
   ngOnInit(): void {
@@ -149,6 +152,7 @@ export class AppComponent implements OnInit {
         this.LogedIn = true;
         this.dataServer.ShareLoginUser(this.LoggedUser);
         this.dataServer.ShareisLogged(this.LogedIn);
+        this.dataServer.getCartDetails();
       },
       (err) => {
         console.log(err);
@@ -190,5 +194,17 @@ export class AppComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  toggleMode() {
+    this.theme = document.body.classList.contains('dark-mode') ? 'l' : 'd';
+    window.localStorage.setItem('eSt', this.theme);
+    document.body.classList.toggle('dark-mode');
+  }
+  changeTheme(val: string) {
+    let isDarkMode = document.body.classList.contains('dark-mode');
+    if (!isDarkMode && val === 'd') {
+      document.body.classList.toggle('dark-mode');
+    }
   }
 }

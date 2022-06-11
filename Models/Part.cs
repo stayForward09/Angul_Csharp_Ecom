@@ -11,4 +11,5 @@ public class Part
     public Guid PcId { get; set; }
     public Category category { get; set; }
     public ICollection<Discount> Discounts { get; set; }
+    public ICollection<CartItems> cartItems { get; set; }
 }

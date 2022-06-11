@@ -229,7 +229,6 @@ public class AdminController : ControllerBase
                                       Url = x.PiIsTD ? x.PiFilename : urlpath + Url.Content($"/PartImgs/{x.PiFilename}")
                                   }).ToList()
                               }).ToListAsync();
-            Response.Headers.Add("X-Pagination", urlpath);
             return Ok(new Response<object>(data));
         }
         catch (Exception ex)
@@ -370,7 +369,7 @@ public class AdminController : ControllerBase
                                       IsTd = x.PiIsTD,
                                       Url = x.PiIsTD ? x.PiFilename : urlpath + Url.Content($"/PartImgs/{x.PiFilename}")
                                   }).ToList()
-                              }).ToListAsync();
+                              }).FirstOrDefaultAsync();
             return Ok(new Response<object>(data));
         }
         catch (Exception ex)
@@ -387,10 +386,11 @@ public class AdminController : ControllerBase
         {
             var userdetails = await getCurrentUser();
             string urlpath = Request.Scheme + "://" + Request.Host.Value;
+            var discountsData = await unitOfWork.discountRepository.fetchDiscountsbyCondition(x => x.EndDate > DateTime.Now && x.Status == true);
             var users = await unitOfWork.Users.CheckEmailExists(userdetails.emailID);
             var lastvisited = await (from sHis in context.SearchViewHistory
                                      join pa in context.Part on sHis.visitedPrd equals pa.Pid.ToString()
-                                     where sHis.visitedPrd != null
+                                     where sHis.visitedPrd != null && sHis.UsID == users.UsID.ToString()
                                      select new
                                      {
                                          ID = pa.Pid,
@@ -417,7 +417,7 @@ public class AdminController : ControllerBase
                                     {
                                         srches = sHis.searchterm
                                     }).Distinct().ToListAsync();
-            var data = new { lstVistited = lastvisited1, srchhis = lastsrched };
+            var data = new { lstVistited = lastvisited1, srchhis = lastsrched, discount = "" };
 
             return Ok(new Response<object>(data));
         }

@@ -9,5 +9,6 @@ public interface IUnitOfWork
     IPartImageRepository partImageRepository { get; }
     ISearchViewHistoryRepository searchViewHistoryRepository { get; }
     IDiscountRepository discountRepository { get; }
+    ICartItemsRepository cartItemsRepository {get;}
     Task CompleteAsync();
 }

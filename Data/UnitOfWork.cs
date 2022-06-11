@@ -12,10 +12,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public IUserDetailsRepository userDetailsRepository { get; private set; }
     public IPartRepository partRepository { get; private set; }
     public IPartImageRepository partImageRepository { get; private set; }
-
     public ISearchViewHistoryRepository searchViewHistoryRepository { get; private set; }
-
     public IDiscountRepository discountRepository { get; private set; }
+    public ICartItemsRepository cartItemsRepository { get; private set; }
 
     public UnitOfWork(PartDbContext _context, ILoggerFactory loggerFactory)
     {
@@ -27,6 +26,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         partImageRepository = new PartImageRepository(context, logger);
         searchViewHistoryRepository = new SearchViewHistoryRepository(context, logger);
         discountRepository = new DiscountRepository(context, logger);
+        cartItemsRepository = new CartItemsRepository(context, logger);
     }
 
     public async Task CompleteAsync()

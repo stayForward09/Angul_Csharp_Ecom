@@ -7,7 +7,7 @@
     display: flex;
     padding: 0.5rem;
     flex-wrap: wrap;
-    background-color: white;
+    background-color: var(--color-bg);
     min-height: 3rem;
     box-shadow: 0 0 2px 0 rgb(0 0 0 / 70%);
     justify-content: space-between;
@@ -66,7 +66,7 @@
 .autocomplete-drop-down {
     display: flex;
     height: auto;
-    background-color: white;
+    background-color: var(--color-bg);
     align-items: flex-start;
     box-shadow: 1px 1px 2px 2px rgb(0 0 0 / 40%);
     position: absolute;
@@ -197,4 +197,21 @@ input.ng-touched.ng-invalid {
     width: 100%;
     font-weight: bold;
     font-size: 1rem;
+}
+
+.icon {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    stroke-width: 0;
+    stroke: var(--svg-fill-color);
+    fill: var(--svg-fill-color);
+}
+
+.btnTheme {
+    display: flex;
+    background: transparent;
+    border: 0px;
+    outline: none;
+    cursor: pointer;
 }

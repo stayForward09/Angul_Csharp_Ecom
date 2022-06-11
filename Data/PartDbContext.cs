@@ -12,6 +12,7 @@ public class PartDbContext : DbContext
     public virtual DbSet<SearchViewHistory> SearchViewHistory { get; set; }
     public virtual DbSet<Category> Category { get; set; }
     public virtual DbSet<Discount> Discount { get; set; }
+    public virtual DbSet<CartItems> CartItems { get; set; }
     public PartDbContext(DbContextOptions<PartDbContext> options) : base(options)
     {
 
@@ -138,6 +139,29 @@ public class PartDbContext : DbContext
             entity.Property(e => e.PrdId).HasColumnName("PrdId").HasColumnType("uniqueidentifier");
             entity.Property(e => e.StartDate).HasColumnName("StartDate").HasColumnType("datetime").IsRequired();
             entity.Property(e => e.EndDate).HasColumnName("EndDate").HasColumnType("datetime").IsRequired();
+        });
+
+        modelBuilder.Entity<CartItems>()
+        .HasOne(e => e.Part)
+        .WithMany(p => p.cartItems)
+        .HasForeignKey(k => k.CIPrid)
+        .HasConstraintName("FK_CIPrid");
+
+        modelBuilder.Entity<CartItems>()
+        .HasOne(e => e.User)
+        .WithMany(p => p.cartItems)
+        .HasForeignKey(k => k.CIUsid)
+        .HasConstraintName("FK_CIUsid");
+
+        modelBuilder.Entity<CartItems>(entity =>
+        {
+            entity.HasKey("CITId").HasName("PK_CITId");
+            entity.Property(e => e.CITId).HasColumnName("CITId").HasColumnType("uniqueidentifier").ValueGeneratedOnAdd();
+            entity.Property(e => e.CIQty).HasColumnName("CIQty").HasColumnType("int").IsRequired();
+            entity.Property(e => e.CIPrid).HasColumnName("CIPrid").HasColumnType("uniqueidentifier").IsRequired();
+            entity.Property(e => e.CIUsid).HasColumnName("CIUsid").HasColumnType("uniqueidentifier").IsRequired();
+            entity.Property(e => e.CreatedOn).HasColumnName("CreatedOn").HasColumnType("datetime").ValueGeneratedOnAdd();
+            entity.Property(e => e.UpdatedOn).HasColumnName("UpdatedOn").HasColumnType("datetime").ValueGeneratedOnUpdate();
         });
     }
 }
