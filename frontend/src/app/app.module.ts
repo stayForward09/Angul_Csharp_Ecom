@@ -14,6 +14,7 @@ import { ShopCartIconComponent } from './Shared/Components/shop-cart-icon/shop-c
 import { RippleDirective } from './Shared/Directives/ripple.directive';
 import { PaginationComponent } from './Shared/Components/pagination/pagination.component';
 import { CartComponent } from './Components/cart/cart.component';
+import { CurrencyPipe } from './Shared/pipe/currency.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CartComponent } from './Components/cart/cart.component';
     ShopCartIconComponent,
     RippleDirective,
     PaginationComponent,
-    CartComponent
+    CartComponent,
+    CurrencyPipe
   ],
   imports: [
     BrowserModule,
