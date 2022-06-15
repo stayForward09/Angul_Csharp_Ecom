@@ -26,7 +26,6 @@ export class DataService {
     this.loggedUser.next(data);
   }
   ShareCartItem() {
-    console.log('Emiting Changes..');
     this.cartItems.next(this.cartData);
   }
 

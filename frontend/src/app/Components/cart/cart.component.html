@@ -14,10 +14,10 @@
                     </div>
                     <div class="itemPriceWraper">
                         <div class="itemCalculatedPrice">
-                            ₹{{ getPrice(data.Price,data.Disount) | number}}
+                            {{ getPrice(data.Price,data.Disount) | currency}}
                         </div>
                         <div *ngIf="data.Disount">
-                            <small style="text-decoration: line-through;">₹{{data.Price |number}}</small>
+                            <small style="text-decoration: line-through;">{{data.Price |currency}}</small>
                         </div>
                         <div *ngIf="data.Disount && data.Disount.type === 2">
                             <small class="itemPriceOff">{{data.Disount.Price}}% off</small>
@@ -55,15 +55,15 @@
                 Price ({{$any($CartItem|async)?.length}} {{$any($CartItem|async)?.length>1?"items":"item"}})
             </div>
             <div>
-                ₹{{getTotalPriceWithouDiscount() | number}}
+                {{getTotalPriceWithouDiscount() | currency}}
             </div>
         </div>
         <div *ngIf="hasDiscount()" class="pricingItemDisplay itemPriceOff">
             <div>
-               Discount
+                Discount
             </div>
             <div>
-                -₹{{getDiscountValue() | number}}
+                -{{getDiscountValue() | currency}}
             </div>
         </div>
         <div class="pricingItemDisplay fontBolder pricingTotal">
@@ -71,12 +71,12 @@
                 Total Price
             </div>
             <div>
-                ₹{{getTotalPrice() | number}}
+                {{getTotalPrice() | currency}}
             </div>
         </div>
-        <div class="pricingItemDisplay fontBolder itemPriceOff">
+        <div class="pricingItemDisplay fontBolder itemPriceOff" *ngIf="hasDiscount()">
             <div>
-                You will save ₹{{getDiscountValue() | number}} on this order
+                You will save {{getDiscountValue() | currency}} on this order
             </div>
         </div>
     </div>

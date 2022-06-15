@@ -51,7 +51,7 @@ export class CartComponent implements OnInit {
     };
     this.server.patchCartItems(data).subscribe(
       (x) => {
-        console.log(x);
+        // console.log(x);
       },
       (err) => {
         console.log(err);
@@ -66,7 +66,6 @@ export class CartComponent implements OnInit {
   removeItem(id: string) {
     this.server.deleteCartItem(id).subscribe(
       (res: Response) => {
-        console.log(res);
         this.dataServer.getCartDetails();
       },
       (err) => {

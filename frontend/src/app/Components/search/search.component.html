@@ -18,14 +18,14 @@
                 </div>
                 <div class="divCardFooterContent">
                     <div style="font-weight: bolder;">
-                        ₹{{calculateDiscount(item.Discount,item.price) | number}}
+                        {{calculateDiscount(item.Discount,item.price) | currency}}
                     </div>
                     <div *ngIf="item.Discount">
-                        <small style="text-decoration: line-through;color: #878787;">₹{{item.price | number}}</small>
+                        <small style="text-decoration: line-through;color: #878787;">{{item.price | currency}}</small>
                     </div>
                     <div *ngIf="item.Discount" style="color: green;font-weight: bolder;">
                         <div *ngIf="item.Discount.type === 1;else perOff">
-                            <small>₹{{item.Discount.Amount|number}} off</small>
+                            <small>{{item.Discount.Amount|currency}} off</small>
                         </div>
                         <ng-template #perOff>
                             <small> {{item.Discount.Amount}}% off</small>
