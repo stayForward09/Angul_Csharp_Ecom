@@ -48,4 +48,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         var data = await dbSet.Where(predicate).ToListAsync();
         return data;
     }
+
+    public async Task<T> getFirstByCondition(Expression<Func<T, bool>> predicate)
+    {
+        var data = await dbSet.FirstOrDefaultAsync(predicate);
+        return data;
+    }
 }

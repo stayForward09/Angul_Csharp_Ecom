@@ -12,4 +12,5 @@ public class Part
     public Category category { get; set; }
     public ICollection<Discount> Discounts { get; set; }
     public ICollection<CartItems> cartItems { get; set; }
+    public ICollection<OrderItems> OrderItems { get; set; }
 }

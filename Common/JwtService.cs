@@ -2,7 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
+using StackApi.Core.IConfiguration;
+using StackApi.Dtos;
 using StackApi.Models;
 
 namespace StackApi.Common;
@@ -10,9 +13,13 @@ namespace StackApi.Common;
 public class JwtService : IJwtService
 {
     private readonly IConfiguration configuration;
-    public JwtService(IConfiguration _config)
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitofWork;
+    public JwtService(IConfiguration _config, IMapper mapper, IUnitOfWork unitOfWork)
     {
         configuration = _config;
+        _mapper = mapper;
+        _unitofWork = unitOfWork;
     }
     public object GenerateJwt(User data)
     {
@@ -31,6 +38,18 @@ public class JwtService : IJwtService
                 expires: DateTime.Now.AddDays(60),
                 signingCredentials: credentials);
         return new { Token = new JwtSecurityTokenHandler().WriteToken(token), ExpireAt = token.ValidTo };
+    }
+
+    public async Task<TokenUserDetails> getCurrentUser(ClaimsIdentity identity)
+    {
+        var usid = identity.Claims.Cast<Claim>().Where(x => x.Type == "UserID").FirstOrDefault()?.Value;
+        if (usid is not null)
+        {
+            var user = await _unitofWork.Users.GetUserbyCondition(x => x.UsID == Guid.Parse(usid));
+            var userDetails = _mapper.Map<TokenUserDetails>(user);
+            return userDetails;
+        }
+        return null;
     }
 
     public string HashPassword(string password)

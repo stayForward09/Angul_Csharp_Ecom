@@ -15,6 +15,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public ISearchViewHistoryRepository searchViewHistoryRepository { get; private set; }
     public IDiscountRepository discountRepository { get; private set; }
     public ICartItemsRepository cartItemsRepository { get; private set; }
+    public IOrdersRepositories ordersRepositories { get; private set; }
+    public IOrderItemsRepository orderItemsRepository { get; private set; }
+    public IOrdersDiscountRepository ordersDiscountRepository { get; private set; }
 
     public UnitOfWork(PartDbContext _context, ILoggerFactory loggerFactory)
     {
@@ -27,6 +30,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         searchViewHistoryRepository = new SearchViewHistoryRepository(context, logger);
         discountRepository = new DiscountRepository(context, logger);
         cartItemsRepository = new CartItemsRepository(context, logger);
+        ordersRepositories = new OrderRespository(context, logger);
+        orderItemsRepository = new OrderItemsRepository(context, logger);
+        ordersDiscountRepository = new OrdersDiscountRepository(context, logger);
     }
 
     public async Task CompleteAsync()
@@ -37,5 +43,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public void Dispose()
     {
         context.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

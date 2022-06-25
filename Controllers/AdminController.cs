@@ -124,16 +124,6 @@ public class AdminController : ControllerBase
         return Ok(new Response<object>(data));
     }
 
-    [HttpPost]
-    [Route("[controller]/SaveUserDetails")]
-    [Authorize]
-    public async Task<IActionResult> SaveUserDetails(UserDetails userDetails)
-    {
-        await unitOfWork.userDetailsRepository.Add(userDetails);
-        await unitOfWork.CompleteAsync();
-        return Ok(new Response<object>("User Details Updated", true));
-    }
-
     [HttpPost, Authorize]
     [Route("[controller]/VerifyMailOTP")]
     public async Task<IActionResult> VerifyMailOTP(VerifyOTP verifyOTP)
@@ -276,7 +266,7 @@ public class AdminController : ControllerBase
         try
         {
             string urlpath = Request.Scheme + "://" + Request.Host.Value;
-            var currentUser = await getCurrentUser();
+            var currentUser = await jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
             if (currentUser is not null)
             {
                 SearchViewHistory searchViewHistory = new SearchViewHistory();
@@ -344,7 +334,7 @@ public class AdminController : ControllerBase
         try
         {
             string urlpath = Request.Scheme + "://" + Request.Host.Value;
-            var currentUser = await getCurrentUser();
+            var currentUser = await jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
             if (currentUser is not null)
             {
                 SearchViewHistory searchViewHistory = new SearchViewHistory();
@@ -384,7 +374,7 @@ public class AdminController : ControllerBase
     {
         try
         {
-            var userdetails = await getCurrentUser();
+            var userdetails = await jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
             string urlpath = Request.Scheme + "://" + Request.Host.Value;
             var discountsData = await unitOfWork.discountRepository.fetchDiscountsbyCondition(x => x.EndDate > DateTime.Now && x.Status == true);
             var users = await unitOfWork.Users.CheckEmailExists(userdetails.emailID);
@@ -433,12 +423,51 @@ public class AdminController : ControllerBase
     [Route("[controller]/[action]")]
     public async Task<IActionResult> getUserdetails()
     {
-        var data = await getCurrentUser();
+        var data = await jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
         if (data is not null)
         {
             return Ok(new Response<TokenUserDetails>(data));
         }
         return BadRequest(new Response<object>("Invalid Token", false));
+    }
+
+    [HttpPost, Authorize]
+    [Route("[controller]/[action]")]
+
+    public async Task<IActionResult> saveUserDetails([FromBody] UserDetailsDtos userDetails)
+    {
+        var user = await jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
+        if (user is null)
+        {
+            return BadRequest(new Response<object>() { Message = "Wrong Data", Succeeded = false });
+        }
+        var exe = await unitOfWork.userDetailsRepository.getFirstByCondition(x => x.UsId == user.usID);
+        if (exe is null)
+        {
+            var nuserDetail = mapper.Map<UserDetails>(userDetails);
+            nuserDetail.UsId = user.usID;
+            await unitOfWork.userDetailsRepository.Add(nuserDetail);
+        }
+        else
+        {
+            mapper.Map<UserDetailsDtos, UserDetails>(userDetails, exe);
+        }
+        await unitOfWork.CompleteAsync();
+        return Ok(new Response<object>() { Message = "updated", Succeeded = true });
+    }
+
+    [HttpGet, Authorize]
+    [Route("[controller]/[action]")]
+    public async Task<IActionResult> getUserAddressDetails()
+    {
+        var user = await jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
+        if (user is null)
+        {
+            return BadRequest(new Response<object>() { Message = "Wrong Data", Succeeded = false });
+        }
+        var data = await unitOfWork.userDetailsRepository.getFirstByCondition(x => x.UsId == user.usID);
+        var res = mapper.Map<UserDetailsDtos>(data);
+        return Ok(new Response<UserDetailsDtos>(res));
     }
 
     [NonAction]
@@ -453,18 +482,5 @@ public class AdminController : ControllerBase
         }
 
         return contentType;
-    }
-    [NonAction]
-    public async Task<TokenUserDetails> getCurrentUser()
-    {
-        var identity = User.Identity as ClaimsIdentity;
-        var usid = identity.Claims.Cast<Claim>().Where(x => x.Type == "UserID").FirstOrDefault()?.Value;
-        if (usid is not null)
-        {
-            var user = await unitOfWork.Users.GetUserbyCondition(x => x.UsID == Guid.Parse(usid));
-            var userDetails = mapper.Map<TokenUserDetails>(user);
-            return userDetails;
-        }
-        return null;
     }
 }

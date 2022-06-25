@@ -13,6 +13,9 @@ public class PartDbContext : DbContext
     public virtual DbSet<Category> Category { get; set; }
     public virtual DbSet<Discount> Discount { get; set; }
     public virtual DbSet<CartItems> CartItems { get; set; }
+    public virtual DbSet<Orders> Orders { get; set; }
+    public virtual DbSet<OrderItems> OrderItems { get; set; }
+    public virtual DbSet<OrdersDiscount> OrdersDiscount { get; set; }
     public PartDbContext(DbContextOptions<PartDbContext> options) : base(options)
     {
 
@@ -46,6 +49,7 @@ public class PartDbContext : DbContext
             entity.Property(e => e.UsId).HasColumnType("uniqueidentifier").HasColumnName("UsId").IsRequired();
             entity.Property(e => e.CompanyCategory).HasColumnType("nvarchar(100)").HasColumnName("CompanyCategory").IsRequired();
             entity.Property(e => e.CompanyName).HasColumnType("nvarchar(100)").HasColumnName("CompanyName").IsRequired();
+            entity.Property(e => e.Address).HasColumnName("Address").HasColumnType("nvarchar(400)");
         });
 
         modelBuilder.Entity<Part>()
@@ -162,6 +166,76 @@ public class PartDbContext : DbContext
             entity.Property(e => e.CIUsid).HasColumnName("CIUsid").HasColumnType("uniqueidentifier").IsRequired();
             entity.Property(e => e.CreatedOn).HasColumnName("CreatedOn").HasColumnType("datetime").ValueGeneratedOnAdd();
             entity.Property(e => e.UpdatedOn).HasColumnName("UpdatedOn").HasColumnType("datetime").ValueGeneratedOnUpdate();
+        });
+
+        modelBuilder.Entity<Orders>()
+        .HasKey(e => e.Oid)
+        .HasName("PK_Oid");
+
+        modelBuilder.Entity<Orders>()
+        .HasOne(e => e.User)
+        .WithMany(u => u.Orders)
+        .HasForeignKey(fk => fk.UsId)
+        .HasConstraintName("FK_OrUsId");
+
+        modelBuilder.Entity<Orders>(e =>
+        {
+            e.Property(e => e.Oid).HasColumnType("uniqueidentifier")
+            .HasColumnName("Oid").ValueGeneratedOnAdd();
+            e.Property(e => e.PayRef).HasColumnType("varchar(80)")
+            .HasColumnName("PayRef").IsRequired(false);
+            e.Property(e => e.PayStatus).HasColumnType("int").HasColumnName("PayStatus").IsRequired();
+            e.Property(e => e.PayType).HasColumnType("int").HasColumnName("PayType").IsRequired();
+            e.Property(e => e.Address).HasColumnType("nvarchar(400)").HasColumnName("Address").IsRequired();
+            e.Property(e => e.TotalPrice).HasColumnType("decimal(16,2)").HasColumnName("TotalPrice").IsRequired();
+            e.Property(e => e.UsId).HasColumnType("uniqueidentifier").HasColumnName("UsId").IsRequired();
+            e.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasColumnName("CreatedDate").HasDefaultValueSql("getdate()");
+        });
+
+        modelBuilder.Entity<OrderItems>()
+        .HasKey(e => e.OIid)
+        .HasName("PK_OIid");
+
+        modelBuilder.Entity<OrderItems>()
+        .HasOne(e => e.Orders)
+        .WithMany(e => e.OrderItems)
+        .HasForeignKey(e => e.Oid)
+        .HasConstraintName("FK_OISOid");
+
+        modelBuilder.Entity<OrderItems>()
+        .HasOne(e => e.Part)
+        .WithMany(e => e.OrderItems)
+        .HasForeignKey(e => e.Prid)
+        .HasConstraintName("FK_OISPrid");
+
+        modelBuilder.Entity<OrderItems>(e =>
+        {
+            e.Property(e => e.OIid).HasColumnType("uniqueidentifier").HasColumnName("OIid").ValueGeneratedOnAdd();
+            e.Property(e => e.Oid).HasColumnType("uniqueidentifier").HasColumnName("Oid").IsRequired();
+            e.Property(e => e.OrderPrice).HasColumnType("decimal(16,2)").HasColumnName("OrderPrice").IsRequired();
+            e.Property(e => e.ListPrice).HasColumnType("decimal(16,2)").HasColumnName("ListPrice").IsRequired();
+            e.Property(e => e.Qty).HasColumnType("int").HasColumnName("Qty").IsRequired();
+            e.Property(e => e.Prid).HasColumnType("uniqueidentifier").HasColumnName("Prid").IsRequired();
+        });
+
+        modelBuilder.Entity<OrdersDiscount>()
+        .HasKey(e => e.ODid)
+        .HasName("PK_ODid");
+
+        modelBuilder.Entity<OrdersDiscount>()
+        .HasOne<OrderItems>(e => e.OrderItems)
+        .WithOne(e => e.OrdersDiscount)
+        .HasForeignKey<OrdersDiscount>(e => e.OIid)
+        .HasConstraintName("FK_OIid");
+
+        modelBuilder.Entity<OrdersDiscount>(e =>
+        {
+            e.Property(e => e.ODid).HasColumnType("uniqueidentifier").HasColumnName("ODid").ValueGeneratedOnAdd();
+            e.Property(e => e.OIid).HasColumnType("uniqueidentifier").HasColumnName("OIid").IsRequired();
+            e.Property(e => e.CouponCode).HasColumnType("varchar(20)").HasColumnName("CouponCode").IsRequired();
+            e.Property(e => e.CouponName).HasColumnType("varchar(40)").HasColumnName("CouponName").IsRequired();
+            e.Property(e => e.Amount).HasColumnType("decimal(16,2)").HasColumnName("Amount").IsRequired();
+            e.Property(e => e.DType).HasColumnType("int").HasColumnName("DType").IsRequired();
         });
     }
 }

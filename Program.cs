@@ -11,6 +11,7 @@ using StackApi.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using StackApi.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -106,7 +107,11 @@ builder.Services.AddApiVersioning(x =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IMailService, MailService>();
-builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddHttpClient<IPayment, Payment>(opt =>
+{
+    opt.BaseAddress = new Uri(builder.Configuration["paymentURL"]);
+});
 // Redis Cache
 builder.Services.AddSingleton<IConnectionMultiplexer>(x => ConnectionMultiplexer.Connect(builder.Configuration["Rediscon"]));
 builder.Services.AddSingleton<ICacheService, RedisCacheService>();

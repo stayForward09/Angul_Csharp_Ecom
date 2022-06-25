@@ -47,5 +47,12 @@ public class Mapper : Profile
         .ForMember(dest => dest.CIQty, opt => opt.MapFrom(src => src.CIQty))
         .ForMember(dest => dest.CITId, opt => opt.MapFrom(src => src.CITId))
         .ReverseMap();
+
+        CreateMap<UserDetailsDtos, UserDetails>()
+        .ForMember(des => des.Address, opt => opt.MapFrom(src => src.Address))
+        .ForMember(des => des.CompanyCategory, opt => opt.MapFrom(src => src.CompanyCategory))
+        .ForMember(des => des.CompanyName, opt => opt.MapFrom(src => src.CompanyName))
+        .ForMember(des => des.UsId, opt => opt.Ignore())
+        .ReverseMap();
     }
 }

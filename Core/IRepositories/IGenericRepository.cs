@@ -11,4 +11,5 @@ public interface IGenericRepository<T> where T : class
     Task<bool> Delete(Guid ID);
     Task<bool> Update(T Entity);
     Task<IEnumerable<T>> getByCondition(Expression<Func<T,bool>> predicate);
+    Task<T> getFirstByCondition(Expression<Func<T,bool>> predicate);
 }
