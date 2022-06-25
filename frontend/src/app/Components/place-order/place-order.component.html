@@ -1,0 +1,36 @@
+<div class="divOrderw">
+    <form #addressFrm="ngForm" (ngSubmit)="addressFrm.form.valid && saveAddress()" class="formAddress">
+        <label class="lblheading">
+            Delivery Address
+        </label>
+        <div>
+            <textarea autocomplete="off" class="txtAddress" name="address" [(ngModel)]="userDetails.Address" #useAddress
+                maxlength="300" required>
+        </textarea>
+        </div>
+        <div>
+            <button type="submit" class="btnSave" [disabled]="prevStateAddress === userDetails.Address">Save</button>
+        </div>
+    </form>
+    <form style="display: flex;flex-direction: column;gap: 0.7rem;">
+        <div class="divPaymentWrapper">
+            <div class="divPaymentType" [ngClass]="{'divPaymentType-active': paymentType === 0}"
+                (click)="paymentType=0">
+                <input type="radio" [(ngModel)]="paymentType" [value]="0" name="PaymentType" id="p0" /><label
+                    for="p0">Online
+                    Payment</label>
+            </div>
+            <div class="divPaymentType" [ngClass]="{'divPaymentType-active': paymentType === 1}"
+                (click)="paymentType=1">
+                <input type="radio" [(ngModel)]="paymentType" [value]="1" name="PaymentType" id="p1" /><label
+                    for="p1">Cash
+                    on
+                    Delivery</label>
+            </div>
+        </div>
+        <div>
+            <app-cart [showCartItems]="false"></app-cart>
+        </div>
+        <button type="button" class="btnPlaceOrder" (click)="PlaceOrder()">Place Order</button>
+    </form>
+</div>

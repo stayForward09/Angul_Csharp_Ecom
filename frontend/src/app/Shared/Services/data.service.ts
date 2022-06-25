@@ -12,6 +12,7 @@ export class DataService {
   loggedUser = new BehaviorSubject<ILoginUser>(<ILoginUser>{});
   cartItems = new BehaviorSubject<Array<ICart>>([]);
   cartData: Array<ICart> = [];
+  showLoading = new BehaviorSubject<boolean>(false);
 
   constructor(private server: ServerService) {}
 
@@ -29,14 +30,21 @@ export class DataService {
     this.cartItems.next(this.cartData);
   }
 
+  setGlobalLoading(val: boolean) {
+    this.showLoading.next(val);
+  }
+
   getCartDetails() {
+    this.setGlobalLoading(true);
     this.server.getCartItems().subscribe(
       (x: Response) => {
         var d = x.Data as Array<ICart>;
         this.cartData = d;
         this.ShareCartItem();
+        this.setGlobalLoading(false);
       },
       (err) => {
+        this.setGlobalLoading(false);
         console.log(err);
       }
     );

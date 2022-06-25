@@ -32,9 +32,8 @@
                     style="width: 40px;height: 40px;border-radius: 40px;cursor: pointer;border: 1px solid greenyellow;"
                     loading="lazy" id="imgprofile" />
                 <div *ngIf="showProfileManu" class="dropdownmenu">
-                    <p>Account</p>
-                    <p>Orders</p>
-                    <p>Logout</p>
+                    <a routerLink="/account">Account</a>
+                    <a routerLink="/account">Logout</a>
                 </div>
             </div>
             <div>
@@ -175,3 +174,8 @@
         </ng-container>
     </div>
 </app-dialog>
+<dialog #loadingDialog class="loadingDialog">
+    <div>
+        Loading
+    </div>
+</dialog>

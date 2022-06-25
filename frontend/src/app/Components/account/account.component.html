@@ -1,0 +1,16 @@
+<div class="divcWrapper">
+    <div class="divnav">
+        <button class="btnnav" [ngClass]="{'btnnav-active': displayTab ===0}" (click)="tabClick(0)">Account</button>
+        <button class="btnnav" [ngClass]="{'btnnav-active': displayTab ===1}" (click)="tabClick(1)">Orders</button>
+    </div>
+    <div class="tabContent">
+        <div id="account" class="tabContent-item" [ngClass]="{'slidedown': displayTab === 0}"
+            *ngIf="displayTab === 0">
+            Accounts
+        </div>
+        <div id="orders" class="tabContent-item" [ngClass]="{'slidedown': displayTab === 1}"
+            *ngIf="displayTab === 1">
+            <app-cart></app-cart>
+        </div>
+    </div>
+</div>

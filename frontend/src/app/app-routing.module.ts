@@ -1,3 +1,6 @@
+import { PlaceOrderComponent } from './Components/place-order/place-order.component';
+import { AccountComponent } from './Components/account/account.component';
+import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
 import { ViewProductComponent } from './Components/view-product/view-product.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,6 +13,9 @@ const routes: Routes = [
   { path: 'Search', component: SearchComponent },
   { path: 'View', component: ViewProductComponent },
   { path: 'Cart', component: CartComponent },
+  { path: 'verifyPayment', component: VerifyPaymentComponent },
+  { path: 'account', component: AccountComponent },
+  { path: 'Placeorder', component: PlaceOrderComponent },
 ];
 
 @NgModule({

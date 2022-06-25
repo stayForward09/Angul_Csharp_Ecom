@@ -15,6 +15,10 @@ import { RippleDirective } from './Shared/Directives/ripple.directive';
 import { PaginationComponent } from './Shared/Components/pagination/pagination.component';
 import { CartComponent } from './Components/cart/cart.component';
 import { CurrencyPipe } from './Shared/pipe/currency.pipe';
+import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
+import { AccountComponent } from './Components/account/account.component';
+import { UserDetailsComponent } from './Components/user-details/user-details.component';
+import { PlaceOrderComponent } from './Components/place-order/place-order.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { CurrencyPipe } from './Shared/pipe/currency.pipe';
     RippleDirective,
     PaginationComponent,
     CartComponent,
-    CurrencyPipe
+    CurrencyPipe,
+    VerifyPaymentComponent,
+    AccountComponent,
+    UserDetailsComponent,
+    PlaceOrderComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,7 @@ import {
   IcartDiscount,
 } from './../../Shared/Models/response';
 import { Observable, empty } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-cart',
@@ -16,6 +16,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartComponent implements OnInit {
   $CartItem: Observable<Array<ICart>> = empty();
+  @Input() showCartItems:boolean = true;
 
   constructor(private dataServer: DataService, private server: ServerService) {
     this.$CartItem = this.dataServer.cartItems;

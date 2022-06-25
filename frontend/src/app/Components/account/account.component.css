@@ -1,0 +1,45 @@
+.btnnav {
+    display: flex;
+    border: transparent;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bolder;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btnnav-active {
+    border-bottom: 3px solid;
+    transition: border-bottom .3s ease-in-out;
+}
+
+.divcWrapper {
+    display: flex;
+    gap: 0.3rem;
+    flex-direction: column;
+    padding: 0.3rem;
+    border: 1px solid;
+}
+
+.divnav {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    flex: 0 1 20%;
+    flex-wrap: wrap;
+}
+
+.tabContent {
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.tabContent-item {
+    flex-basis: 100%;
+}
+
+.slidedown {
+    transition: all .5s ease-in-out;
+}

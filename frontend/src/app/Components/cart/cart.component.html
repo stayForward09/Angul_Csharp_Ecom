@@ -1,51 +1,53 @@
 <div class="cartdivWrapper">
-    <div *ngIf="$any($CartItem|async)?.length>0;else noitem" class="cartItemsWrapper">
-        <div class="cartTitle">
-            My Cart({{$any($CartItem|async)?.length}})
-        </div>
-        <div *ngFor="let data of $CartItem|async" class="itemsWrapper">
-            <div class="fnkj">
-                <div>
-                    <img [src]="data.Images" [attr.alt]="data.Pname" class="imgResp" />
-                </div>
-                <div class="itemPartPriceWrapper">
+    <ng-container *ngIf="showCartItems">
+        <div *ngIf="$any($CartItem|async)?.length>0;else noitem" class="cartItemsWrapper">
+            <div class="cartTitle">
+                My Cart({{$any($CartItem|async)?.length}})
+            </div>
+            <div *ngFor="let data of $CartItem|async" class="itemsWrapper">
+                <div class="fnkj">
                     <div>
-                        {{data.Pname}}
+                        <img [src]="data.Images" [attr.alt]="data.Pname" class="imgResp" />
                     </div>
-                    <div class="itemPriceWraper">
-                        <div class="itemCalculatedPrice">
-                            {{ getPrice(data.Price,data.Disount) | currency}}
+                    <div class="itemPartPriceWrapper">
+                        <div>
+                            {{data.Pname}}
                         </div>
-                        <div *ngIf="data.Disount">
-                            <small style="text-decoration: line-through;">{{data.Price |currency}}</small>
+                        <div class="itemPriceWraper">
+                            <div class="itemCalculatedPrice">
+                                {{ getPrice(data.Price,data.Disount) | currency}}
+                            </div>
+                            <div *ngIf="data.Disount">
+                                <small style="text-decoration: line-through;">{{data.Price |currency}}</small>
+                            </div>
+                            <div *ngIf="data.Disount && data.Disount.type === 2">
+                                <small class="itemPriceOff">{{data.Disount.Price}}% off</small>
+                            </div>
                         </div>
-                        <div *ngIf="data.Disount && data.Disount.type === 2">
-                            <small class="itemPriceOff">{{data.Disount.Price}}% off</small>
-                        </div>
+                    </div>
+                </div>
+                <div class="uxtq">
+                    <div class="uxtr">
+                        <button class="btnInd" [disabled]="data.Qty === 1"
+                            (click)="decrementValue(prdqty.value,data.Cid)">-</button>
+                        <input type="number" [value]="data.Qty" #prdqty class="txtItemcount" [disabled]="true" min="1"
+                            max="3" />
+                        <button class="btnInd" [disabled]="data.Qty === 3"
+                            (click)="incrementValue(prdqty.value,data.Cid)">+</button>
+                    </div>
+                    <div>
+                        <button class="btnInd" (click)="removeItem(data.Cid)">Remove</button>
                     </div>
                 </div>
             </div>
-            <div class="uxtq">
-                <div class="uxtr">
-                    <button class="btnInd" [disabled]="data.Qty === 1"
-                        (click)="decrementValue(prdqty.value,data.Cid)">-</button>
-                    <input type="number" [value]="data.Qty" #prdqty class="txtItemcount" [disabled]="true" min="1"
-                        max="3" />
-                    <button class="btnInd" [disabled]="data.Qty === 3"
-                        (click)="incrementValue(prdqty.value,data.Cid)">+</button>
-                </div>
-                <div>
-                    <button class="btnInd" (click)="removeItem(data.Cid)">Remove</button>
-                </div>
+            <div class="divFooter">
+                <a class="btnOrder" appRipple routerLink="/Placeorder">Place Order</a>
             </div>
         </div>
-        <div class="divFooter">
-            <button class="btnOrder" appRipple>Place Order</button>
-        </div>
-    </div>
-    <ng-template #noitem>
-        <h1>No Items Found</h1>
-    </ng-template>
+        <ng-template #noitem>
+            <h1>No Items Found</h1>
+        </ng-template>
+    </ng-container>
     <div class="pricingWrapper" *ngIf="$any($CartItem|async)?.length>0;">
         <div class="pricingTitle fontBolder">
             Price Details

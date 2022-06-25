@@ -1,4 +1,10 @@
-import { IcartItemsAdd, ILogin, Signup } from './../Models/response';
+import {
+  IcartItemsAdd,
+  ILogin,
+  IOrderReq,
+  IUserDetail,
+  Signup,
+} from './../Models/response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -66,6 +72,31 @@ export class ServerService {
   deleteCartItem(id: string) {
     return this.Http.delete<Response>(
       this.BaseUrl + `api/CartItems/deleteCartItem/${id}`
+    );
+  }
+
+  saveUserDetails(data: IUserDetail): Observable<Response> {
+    return this.Http.post<Response>(
+      this.BaseUrl + 'Admin/saveUserDetails',
+      data
+    );
+  }
+
+  getUserAddressDetails(): Observable<Response> {
+    return this.Http.get<Response>(
+      this.BaseUrl + 'Admin/getUserAddressDetails'
+    );
+  }
+
+  createOrder(orderType: number, data: Array<IOrderReq>): Observable<Response> {
+    return this.Http.post<Response>(
+      this.BaseUrl + `api/Order/createOrder?orderType=${orderType}`,
+      data
+    );
+  }
+  verifyPayment(id: string, paymentReflink: string): Observable<Response> {
+    return this.Http.get<Response>(
+      `${this.BaseUrl}api/Order/verifyPayment/${id}/${paymentReflink}`
     );
   }
 }

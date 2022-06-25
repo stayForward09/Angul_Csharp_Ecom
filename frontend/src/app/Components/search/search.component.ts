@@ -43,14 +43,17 @@ export class SearchComponent implements OnInit {
 
   GetSrchResult() {
     this.LoadingData = true;
+    this.dataService.setGlobalLoading(true);
     this.server.getPartResult(this.rSrch, this.page, this.pagesize).subscribe(
       (x: Response) => {
         this.srchResult = x.Data.data;
         this.totalRecords = x.Data.total;
         this.LoadingData = false;
+        this.dataService.setGlobalLoading(false);
       },
       (err) => {
         this.LoadingData = false;
+        this.dataService.setGlobalLoading(false);
         console.log(err);
       }
     );

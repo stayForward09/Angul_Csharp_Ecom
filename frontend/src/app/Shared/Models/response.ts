@@ -63,3 +63,23 @@ export interface IcartDiscount {
   Did: string;
   Price: number;
 }
+
+export interface IOrderReq {
+  prdId: string;
+  DId: string | null;
+  Qty: number;
+  Cid: string;
+}
+
+export interface IUserDetail {
+  CompanyName: string;
+  CompanyCategory: string;
+  Address: string;
+}
+
+export interface IRazorpayRes {
+  razorpay_payment_id:string;
+  razorpay_payment_link_id:string;
+  razorpay_payment_link_status:string;
+  razorpay_signature:string;
+}

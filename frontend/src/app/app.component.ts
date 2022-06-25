@@ -1,5 +1,12 @@
 import { DataService } from './Shared/Services/data.service';
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from '@angular/core';
 import { ServerService } from './Shared/Services/server.service';
 import {
   Response,
@@ -20,7 +27,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'Home';
   isError = false;
   SearchTerm: FormControl = new FormControl();
@@ -28,6 +35,7 @@ export class AppComponent implements OnInit {
   Showdropdown: boolean = false;
   showProfileManu: boolean = false;
   $cartItems: Observable<Array<ICart>> = empty();
+  loadingp: boolean = true;
 
   LogedIn: boolean = false;
   LoggedUser: ILoginUser = <ILoginUser>{};
@@ -36,6 +44,7 @@ export class AppComponent implements OnInit {
   formNo: number = 0;
   signUpForm: Signup = <Signup>{};
   private theme: string = 'l';
+  @ViewChild('loadingDialog', { static: false }) dialogRef!: ElementRef;
 
   constructor(
     private server: ServerService,
@@ -54,6 +63,18 @@ export class AppComponent implements OnInit {
     this.changeTheme(mode);
   }
 
+  ngAfterViewInit(): void {
+    this.dataServer.showLoading.subscribe((x: boolean) => {
+      if (x) {
+        this.showLoadinDialog();
+      } else {
+        this.CloseLoadinDialog();
+      }
+    });
+    this.dataServer.setGlobalLoading(true);
+    this.CheckLogedIn();
+  }
+
   ngOnInit(): void {
     this.SearchTerm.valueChanges
       .pipe(debounceTime(1000))
@@ -62,7 +83,6 @@ export class AppComponent implements OnInit {
           this.GetSrchResult(x);
         }
       });
-    this.CheckLogedIn();
   }
 
   GetSrchResult(keyWord: string) {
@@ -153,6 +173,7 @@ export class AppComponent implements OnInit {
         this.dataServer.ShareLoginUser(this.LoggedUser);
         this.dataServer.ShareisLogged(this.LogedIn);
         this.dataServer.getCartDetails();
+        this.dataServer.setGlobalLoading(false);
       },
       (err) => {
         console.log(err);
@@ -160,6 +181,7 @@ export class AppComponent implements OnInit {
         this.dataServer.ShareLoginUser(<ILoginUser>{});
         this.dataServer.ShareisLogged(this.LogedIn);
         retry(2);
+        this.dataServer.setGlobalLoading(false);
       }
     );
   }
@@ -168,6 +190,8 @@ export class AppComponent implements OnInit {
     let token = window.localStorage.getItem('psToken');
     if (token) {
       this.getUserDetails();
+    } else {
+      this.dataServer.setGlobalLoading(false);
     }
   }
 
@@ -181,6 +205,7 @@ export class AppComponent implements OnInit {
   // }
 
   createAccount() {
+    this.dataServer.setGlobalLoading(true);
     this.signUpForm.IsAdmin = false;
     this.server.AddUser(this.signUpForm).subscribe(
       (x: Response) => {
@@ -192,6 +217,7 @@ export class AppComponent implements OnInit {
       },
       (err) => {
         console.log(err);
+        this.dataServer.setGlobalLoading(false);
       }
     );
   }
@@ -205,6 +231,17 @@ export class AppComponent implements OnInit {
     let isDarkMode = document.body.classList.contains('dark-mode');
     if (!isDarkMode && val === 'd') {
       document.body.classList.toggle('dark-mode');
+    }
+  }
+
+  showLoadinDialog() {
+    if (!this.dialogRef?.nativeElement?.open) {
+      this.dialogRef?.nativeElement?.showModal();
+    }
+  }
+  CloseLoadinDialog() {
+    if (this.dialogRef?.nativeElement?.open) {
+      this.dialogRef.nativeElement?.close();
     }
   }
 }

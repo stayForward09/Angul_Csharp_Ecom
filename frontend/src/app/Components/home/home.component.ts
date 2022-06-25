@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit {
 
   GetData() {
     this.LoadingData = true;
+    this.dataService.setGlobalLoading(true);
     this.server.getHomeDetails().subscribe(
       (x: Response) => {
         const { lstVistited, srchhis } = x.Data;
@@ -48,10 +49,12 @@ export class HomeComponent implements OnInit {
         this.latestSrch = srchhis;
         this.isError = false;
         this.LoadingData = false;
+        this.dataService.setGlobalLoading(false);
       },
       (err) => {
         this.isError = true;
         console.log(err);
+        this.dataService.setGlobalLoading(false);
       }
     );
   }

@@ -215,3 +215,7 @@ input.ng-touched.ng-invalid {
     outline: none;
     cursor: pointer;
 }
+
+#loading>dialog {
+    background-color: transparent;
+}
