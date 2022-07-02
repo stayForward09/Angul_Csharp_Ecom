@@ -172,4 +172,5 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
     background-color: var(--color-core-primary);
     color: white;
+    text-decoration: none;
 }

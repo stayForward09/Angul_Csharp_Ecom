@@ -17,8 +17,6 @@
     display: flex;
     gap: 0.3rem;
     flex-direction: column;
-    padding: 0.3rem;
-    border: 1px solid;
 }
 
 .divnav {
@@ -42,4 +40,43 @@
 
 .slidedown {
     transition: all .5s ease-in-out;
+}
+
+.accordingOrderItems {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.3rem;
+}
+
+.orderItemCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.4rem;
+    background-color: rgba(255, 255, 255, 20%);
+    border: 1px solid #ddd;
+}
+
+.accordingWrapper {
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+details {
+    border: 1px solid #aaa;
+    border-radius: 0.4rem;
+}
+
+details>summary {
+    padding: 0.3rem;
+    font-size: clamp(12px,1rem,2rem);
+    font-family: monospace;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+details[open]>summary {
+    border-bottom: 1px solid #aaa;
 }

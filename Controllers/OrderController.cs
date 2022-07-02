@@ -79,6 +79,37 @@ public class OrderController : ControllerBase
         return Ok(new Response<PaymentVerifyRes>(data));
     }
 
+    [HttpGet, Authorize]
+    [Route("[action]")]
+    public async Task<IActionResult> getOrders()
+    {
+        string urlpath = Request.Scheme + "://" + Request.Host.Value;
+        var user = await _jwtService.getCurrentUser(User.Identity as ClaimsIdentity);
+        var Orders = await _unitofWork.ordersRepositories.getOrderbyCondition(x => x.UsId == user.usID);
+        var result = (from order in Orders
+                      select new
+                      {
+                          OrderId = order.Oid,
+                          Address = order.Address,
+                          TotalPrice = order.TotalPrice,
+                          OrderItems = order.OrderItems.Select(x => new
+                          {
+                              Id = x.OIid,
+                              Qty = x.Qty,
+                              OrderPrice = x.OrderPrice,
+                              ListPrice = x.ListPrice,
+                              Part = new
+                              {
+                                  Part = x.Part.PartName,
+                                  id = x.Part.Pid,
+                                  images = x.Part.PartImages.Where(p => p.PiIsTD == false).Select(p => urlpath + Url.Content($"/PartImgs/{p.PiFilename}")).FirstOrDefault()
+                              },
+                              Discounts = x.OrdersDiscount != null ? new { x.OrdersDiscount.Amount, x.OrdersDiscount.DType, x.OrdersDiscount.CouponName } : null
+                          }).ToList()
+                      }).ToList();
+        return Ok(new Response<object>(result));
+    }
+
     [NonAction]
     public decimal getDiscountPrice(decimal price, decimal disocuntAmount, int Qty)
     {

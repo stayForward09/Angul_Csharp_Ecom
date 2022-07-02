@@ -78,8 +78,24 @@ export interface IUserDetail {
 }
 
 export interface IRazorpayRes {
-  razorpay_payment_id:string;
-  razorpay_payment_link_id:string;
-  razorpay_payment_link_status:string;
-  razorpay_signature:string;
+  razorpay_payment_id: string;
+  razorpay_payment_link_id: string;
+  razorpay_payment_link_status: string;
+  razorpay_signature: string;
+}
+
+export interface IOrderdetails {
+  OrderId: string;
+  Address: string;
+  TotalPrice: number;
+  OrderItems: Array<IOrderItems>;
+}
+
+interface IOrderItems {
+  Id: string;
+  Qty: number;
+  OrderPrice: number;
+  ListPrice: number;
+  Part: any;
+  Discounts: IcartDiscount;
 }

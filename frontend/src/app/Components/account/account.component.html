@@ -4,13 +4,33 @@
         <button class="btnnav" [ngClass]="{'btnnav-active': displayTab ===1}" (click)="tabClick(1)">Orders</button>
     </div>
     <div class="tabContent">
-        <div id="account" class="tabContent-item" [ngClass]="{'slidedown': displayTab === 0}"
-            *ngIf="displayTab === 0">
+        <div id="account" class="tabContent-item" [ngClass]="{'slidedown': displayTab === 0}" *ngIf="displayTab === 0">
             Accounts
         </div>
-        <div id="orders" class="tabContent-item" [ngClass]="{'slidedown': displayTab === 1}"
-            *ngIf="displayTab === 1">
-            <app-cart></app-cart>
+        <div id="orders" class="tabContent-item" [ngClass]="{'slidedown': displayTab === 1}" *ngIf="displayTab === 1">
+            <div class="accordingWrapper">
+                <div *ngFor="let order of orderDetails">
+                    <details>
+                        <summary><b>Order #{{order.OrderId}}</b></summary>
+                        <div class="accordingOrderItems">
+                            <ng-template ngFor let-items [ngForOf]="order.OrderItems">
+                                <div class="orderItemCard">
+                                    <div>
+                                        {{items.Part.Part}}
+                                    </div>
+                                    <div>
+                                        <img [src]="items.Part.images" [alt]="items.Part.Part" />
+                                    </div>
+                                    <div>
+                                        <small style="color: green;">
+                                            Qty&nbsp;{{items.Qty}}&nbsp;X&nbsp;{{items.OrderPrice|currency}}&nbsp;=&nbsp;{{order.TotalPrice|currency}}</small>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </details>
+                </div>
+            </div>
         </div>
     </div>
 </div>

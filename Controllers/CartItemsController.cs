@@ -28,7 +28,7 @@ public class CartItemsController : ControllerBase
         _jwtService = jwtService;
     }
 
-    [HttpPost]
+    [HttpPost, Authorize]
     [Route("[action]")]
     public async Task<IActionResult> addItemtoCart(CartItemsAdd cartItemsAdd)
     {

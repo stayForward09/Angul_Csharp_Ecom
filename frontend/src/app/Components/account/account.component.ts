@@ -1,4 +1,6 @@
+import { ServerService } from 'src/app/Shared/Services/server.service';
 import { Component, OnInit } from '@angular/core';
+import { IOrderdetails, Response } from 'src/app/Shared/Models/response';
 
 @Component({
   selector: 'app-account',
@@ -7,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
   displayTab: number = 0;
+  orderDetails: Array<IOrderdetails> = [];
 
-  constructor() {}
+  constructor(private service: ServerService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getOrders();
+  }
 
   SwitchTabs(e: MouseEvent, id: string) {
     let eve = e.target as HTMLButtonElement;
@@ -35,5 +40,17 @@ export class AccountComponent implements OnInit {
 
   tabClick(indx: number) {
     this.displayTab = indx;
+  }
+
+  getOrders() {
+    this.service.getOrders().subscribe(
+      (x: Response) => {
+        this.orderDetails = x.Data as Array<IOrderdetails>;
+        console.log(this.orderDetails);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }

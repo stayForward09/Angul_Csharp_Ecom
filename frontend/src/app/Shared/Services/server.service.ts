@@ -99,4 +99,7 @@ export class ServerService {
       `${this.BaseUrl}api/Order/verifyPayment/${id}/${paymentReflink}`
     );
   }
+  getOrders(): Observable<Response> {
+    return this.Http.get<Response>(this.BaseUrl + 'api/Order/getOrders');
+  }
 }

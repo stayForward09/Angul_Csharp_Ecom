@@ -28,9 +28,9 @@ export class PlaceOrderComponent implements OnInit {
   ) {
     this.dataService.cartItems.subscribe((x: Array<ICart>) => {
       this.cartItems = x;
-      // if (this.cartItems.length <= 0) {
-      //   this.route.navigateByUrl('/Cart');
-      // }
+      if (this.cartItems.length <= 0) {
+        this.route.navigateByUrl('/Cart');
+      }
     });
   }
 
@@ -92,16 +92,19 @@ export class PlaceOrderComponent implements OnInit {
       };
       OrderReq.push(order);
     });
-    console.log(OrderReq);
     this.dataService.setGlobalLoading(true);
     await this.server
       .createOrder(this.paymentType, OrderReq)
       .toPromise()
       .then(
         (x: Response | undefined) => {
-          let url = x?.Data.short_url;
-          console.log(url);
-          location.href = url;
+          if (this.paymentType === 0) {
+            let url = x?.Data.short_url;
+            location.href = url;
+          } else {
+            this.dataService.getCartDetails();
+            this.route.navigate(['/']);
+          }
         },
         (err) => {
           console.log(err);
